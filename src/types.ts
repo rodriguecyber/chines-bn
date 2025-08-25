@@ -29,3 +29,10 @@ export const OrderCreateSchema = z.object({
 
 export type OrderCreateInput = z.infer<typeof OrderCreateSchema>;
 export type OrderItemInput = z.infer<typeof OrderItemSchema>;
+
+// Auth
+export const LoginSchema = z.object({
+	email: z.string().email(),
+	password: z.string().min(6),
+});
+export type LoginInput = z.infer<typeof LoginSchema>;

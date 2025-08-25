@@ -25,6 +25,12 @@ const EnvSchema = z.object({
 	smtpPass: z.string().optional(),
 	smtpFrom: z.string().optional(),
 	adminEmail: z.string().email().optional(),
+	// Auth / JWT
+	jwtSecret: z.string().min(16, "JWT_SECRET must be at least 16 characters").default("dev-secret-change-me"),
+	jwtExpiresIn: z.union([z.string(), z.coerce.number()]).default("1d"),
+	// Seeding
+	seedAdminEmail: z.string().email().default("admin@example.com"),
+	seedAdminPassword: z.string().min(6).default("admin123"),
 });
 
 const raw = {
@@ -45,6 +51,12 @@ const raw = {
 	smtpPass: process.env.SMTP_PASS,
 	smtpFrom: process.env.SMTP_FROM,
 	adminEmail: process.env.ADMIN_EMAIL,
+	// Auth / JWT
+	jwtSecret: process.env.JWT_SECRET,
+	jwtExpiresIn: process.env.JWT_EXPIRES_IN,
+	// Seeding
+	seedAdminEmail: process.env.SEED_ADMIN_EMAIL,
+	seedAdminPassword: process.env.SEED_ADMIN_PASSWORD,
 };
 
 export type AppConfig = z.infer<typeof EnvSchema>;

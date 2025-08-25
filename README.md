@@ -1,6 +1,6 @@
 ## Backend Server
 
-APIs for products and order submission (no checkout). Uses Express, PostgreSQL (Sequelize), and Nodemailer.
+APIs for products and order submission (no checkout). Uses Express, PostgreSQL (Sequelize), Nodemailer, and JWT-based admin auth.
 
 ### Setup
 1. Copy `.env.example` to `.env` and fill values
@@ -9,7 +9,6 @@ APIs for products and order submission (no checkout). Uses Express, PostgreSQL (
 2. Install deps and run dev server
 
 ```bash
-cd server
 npm install
 npm run dev
 ```
@@ -25,19 +24,22 @@ npm start
   - `PGHOST`, `PGPORT`, `PGUSER`, `PGPASSWORD`, `PGDATABASE`, `PGSSL`
 - `PORT` (default 4000)
 - SMTP: `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS`, `SMTP_FROM`, `ADMIN_EMAIL`
+ - Auth: `JWT_SECRET` (>=16 chars), `JWT_EXPIRES_IN` (default `1d`)
+ - Seeding (optional): `SEED_ADMIN_EMAIL` (default `admin@example.com`), `SEED_ADMIN_PASSWORD` (default `admin123`)
 
-On startup, the server authenticates to PostgreSQL and runs `sequelize.sync()` to create/update tables.
+On startup, the server authenticates to PostgreSQL and runs `sequelize.sync()` to create/update tables. It also seeds an initial admin user if none exists with `SEED_ADMIN_EMAIL`.
 
 ### Endpoints
 - GET `/api/health`
 - GET `/api/products`
 - GET `/api/products/:id`
-- POST `/api/products`
-- PUT `/api/products/:id`
-- DELETE `/api/products/:id`
+- POST `/api/products` (admin)
+- PUT `/api/products/:id` (admin)
+- DELETE `/api/products/:id` (admin)
 - POST `/api/orders` (submit order with user + items)
 - GET `/api/orders/:id`
 - GET `/api/orders?limit=50`
+- POST `/api/auth/login` (body: `{ email, password }`) → `{ token }`
 
 ### Order payload
 ```json

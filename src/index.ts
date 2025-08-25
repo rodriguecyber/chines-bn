@@ -6,6 +6,8 @@ import { sequelize } from "./db";
 import "./models";
 import { productsRouter } from "./routes/products";
 import { ordersRouter } from "./routes/orders";
+import { authRouter } from "./routes/auth";
+import { seedInitialAdmin } from "./seed";
 
 async function start() {
 	const app = express();
@@ -19,6 +21,7 @@ async function start() {
 
 	app.use("/api/products", productsRouter);
 	app.use("/api/orders", ordersRouter);
+	app.use("/api/auth", authRouter);
 
 	// Global error handler
 	app.use((err: any, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
@@ -31,6 +34,7 @@ async function start() {
 
 	await sequelize.authenticate();
 	await sequelize.sync();
+	await seedInitialAdmin();
 
 	app.listen(config.port, () => {
 		console.log(`API server listening on http://localhost:${config.port}`);

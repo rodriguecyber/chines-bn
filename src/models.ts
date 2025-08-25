@@ -3,6 +3,37 @@ import { sequelize } from "./db";
 
 export { sequelize } from "./db";
 
+// User
+export interface UserAttributes {
+	id: number;
+	email: string;
+	password_hash: string;
+	role: "admin" | "user";
+	created_at?: Date;
+	updated_at?: Date;
+}
+
+type UserCreationAttributes = Optional<UserAttributes, "id" | "role" | "created_at" | "updated_at">;
+
+export class User extends Model<UserAttributes, UserCreationAttributes> implements UserAttributes {
+	declare id: number;
+	declare email: string;
+	declare password_hash: string;
+	declare role: "admin" | "user";
+	declare created_at?: Date;
+	declare updated_at?: Date;
+}
+
+User.init(
+	{
+		id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
+		email: { type: DataTypes.STRING(320), allowNull: false, unique: true },
+		password_hash: { type: DataTypes.STRING(255), allowNull: false },
+		role: { type: DataTypes.STRING(20), allowNull: false, defaultValue: "admin" },
+	},
+	{ sequelize, tableName: "users", timestamps: true, underscored: true }
+);
+
 // Product
 export interface ProductAttributes {
 	id: number;
