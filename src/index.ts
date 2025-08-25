@@ -7,6 +7,7 @@ import "./models";
 import { productsRouter } from "./routes/products";
 import { ordersRouter } from "./routes/orders";
 import { authRouter } from "./routes/auth";
+import { categoriesRouter } from "./routes/categories";
 import { seedInitialAdmin } from "./seed";
 
 async function start() {
@@ -22,6 +23,7 @@ async function start() {
 	app.use("/api/products", productsRouter);
 	app.use("/api/orders", ordersRouter);
 	app.use("/api/auth", authRouter);
+	app.use("/api/categories", categoriesRouter);
 
 	// Global error handler
 	app.use((err: any, _req: express.Request, res: express.Response, _next: express.NextFunction) => {

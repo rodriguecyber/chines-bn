@@ -7,10 +7,11 @@ export async function createProduct(input: ProductCreateInput) {
 	const doc = await Product.create({
 		id: nextId,
 		name: input.name,
-		description: input.description ?? null,
+		description: input.description,
 		price_cents: input.price_cents,
 		image_url: input.image_url ?? null,
 		is_active: input.is_active ?? true,
+		category_id: input.category_id,
 	});
 	return doc.toObject();
 }
@@ -36,6 +37,7 @@ export async function updateProduct(id: number, input: ProductUpdateInput) {
 				...(input.price_cents !== undefined ? { price_cents: input.price_cents } : {}),
 				...(input.image_url !== undefined ? { image_url: input.image_url } : {}),
 				...(input.is_active !== undefined ? { is_active: input.is_active } : {}),
+				...(input.category_id !== undefined ? { category_id: input.category_id } : {}),
 			},
 		},
 		{ new: true }

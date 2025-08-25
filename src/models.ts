@@ -23,15 +23,53 @@ const UserSchema = new Schema<UserDoc>(
 
 export const User = model<UserDoc>("User", UserSchema);
 
+// Localized value
+const LocalizedStringSchema = new Schema(
+	{
+		en: { type: String, required: true },
+		fr: { type: String, required: true },
+		zh: { type: String, required: true },
+	},
+	{ _id: false }
+);
+
+export interface LocalizedString {
+	en: string;
+	fr: string;
+	zh: string;
+}
+
+// Category
+export interface CategoryDoc {
+	_id: string;
+	id: number;
+	name: LocalizedString;
+	description: LocalizedString;
+	createdAt?: Date;
+	updatedAt?: Date;
+}
+
+const CategorySchema = new Schema<CategoryDoc>(
+	{
+		id: { type: Number, required: true, unique: true, index: true },
+		name: { type: LocalizedStringSchema, required: true },
+		description: { type: LocalizedStringSchema, required: true },
+	},
+	{ timestamps: true }
+);
+
+export const Category = model<CategoryDoc>("Category", CategorySchema);
+
 // Product
 export interface ProductDoc {
 	_id: string;
 	id: number; // stable numeric id for API
-	name: string;
-	description?: string | null;
+	name: LocalizedString;
+	description: LocalizedString;
 	price_cents: number;
 	image_url?: string | null;
 	is_active: boolean;
+	category_id: number;
 	createdAt?: Date;
 	updatedAt?: Date;
 }
@@ -39,11 +77,12 @@ export interface ProductDoc {
 const ProductSchema = new Schema<ProductDoc>(
 	{
 		id: { type: Number, required: true, unique: true, index: true },
-		name: { type: String, required: true },
-		description: { type: String },
+		name: { type: LocalizedStringSchema, required: true },
+		description: { type: LocalizedStringSchema, required: true },
 		price_cents: { type: Number, required: true },
 		image_url: { type: String },
 		is_active: { type: Boolean, default: true },
+		category_id: { type: Number, required: true, index: true },
 	},
 	{ timestamps: true }
 );
@@ -96,4 +135,4 @@ const OrderSchema = new Schema<OrderDoc>(
 
 export const Order = model<OrderDoc>("Order", OrderSchema);
 
-export const Models = { User, Product, Order };
+export const Models = { User, Category, Product, Order };
