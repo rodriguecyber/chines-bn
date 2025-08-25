@@ -4,7 +4,7 @@ import { createUser } from "./repositories/userRepository";
 
 export async function seedInitialAdmin(): Promise<void> {
 	const email = config.seedAdminEmail;
-	const existing = await User.findOne({ where: { email } });
+	const existing = await User.findOne({ email });
 	if (existing) return;
 	await createUser({ email, password: config.seedAdminPassword, role: "admin" });
 }

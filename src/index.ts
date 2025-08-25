@@ -2,7 +2,7 @@ import express from "express";
 import cors from "cors";
 import morgan from "morgan";
 import { config } from "./config";
-import { sequelize } from "./db";
+import { connectMongo } from "./db";
 import "./models";
 import { productsRouter } from "./routes/products";
 import { ordersRouter } from "./routes/orders";
@@ -32,8 +32,7 @@ async function start() {
 		res.status(500).json({ error: "Internal server error" });
 	});
 
-	await sequelize.authenticate();
-	await sequelize.sync();
+	await connectMongo();
 	await seedInitialAdmin();
 
 	app.listen(config.port, () => {

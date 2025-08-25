@@ -1,42 +1,49 @@
 import { Product } from "../models";
 import { ProductCreateInput, ProductUpdateInput } from "../types";
+import { getNextSequence } from "./sequence";
 
 export async function createProduct(input: ProductCreateInput) {
-	const product = await Product.create({
+	const nextId = await getNextSequence("products");
+	const doc = await Product.create({
+		id: nextId,
 		name: input.name,
 		description: input.description ?? null,
 		price_cents: input.price_cents,
 		image_url: input.image_url ?? null,
 		is_active: input.is_active ?? true,
 	});
-	return product.get({ plain: true });
+	return doc.toObject();
 }
 
 export async function listProducts(activeOnly = true) {
-	const where = activeOnly ? { is_active: true } : {};
-	const products = await Product.findAll({ where, order: [["id", "DESC"]] });
-	return products.map((p) => p.get({ plain: true }));
+	const where = (activeOnly ? { is_active: true } : {}) as any;
+	const products = await Product.find(where).sort({ id: -1 }).lean();
+	return products;
 }
 
 export async function getProductById(id: number) {
-	const product = await Product.findByPk(id);
-	return product ? product.get({ plain: true }) : undefined;
+	const product = await Product.findOne({ id }).lean();
+	return product || undefined;
 }
 
 export async function updateProduct(id: number, input: ProductUpdateInput) {
-	const product = await Product.findByPk(id);
-	if (!product) return undefined;
-	await product.update({
-		name: input.name ?? product.name,
-		description: input.description ?? product.getDataValue("description"),
-		price_cents: input.price_cents ?? product.price_cents,
-		image_url: input.image_url ?? product.getDataValue("image_url"),
-		is_active: input.is_active ?? product.is_active,
-	});
-	return product.get({ plain: true });
+	const updated = await Product.findOneAndUpdate(
+		{ id },
+		{
+			$set: {
+				...(input.name !== undefined ? { name: input.name } : {}),
+				...(input.description !== undefined ? { description: input.description } : {}),
+				...(input.price_cents !== undefined ? { price_cents: input.price_cents } : {}),
+				...(input.image_url !== undefined ? { image_url: input.image_url } : {}),
+				...(input.is_active !== undefined ? { is_active: input.is_active } : {}),
+			},
+		},
+		{ new: true }
+	).lean();
+	return updated || undefined;
 }
 
 export async function deleteProduct(id: number) {
-	const count = await Product.destroy({ where: { id } });
-	return count > 0;
+	const res = await Product.deleteOne({ id });
+	return res.deletedCount === 1;
 }

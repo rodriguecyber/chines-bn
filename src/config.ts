@@ -6,18 +6,8 @@ dotenv.config();
 const EnvSchema = z.object({
 	nodeEnv: z.string().default("development"),
 	port: z.coerce.number().default(4000),
-	// PostgreSQL
-	databaseUrl: z.string().optional(),
-	pgHost: z.string().optional(),
-	pgPort: z.coerce.number().optional(),
-	pgUser: z.string().optional(),
-	pgPassword: z.string().optional(),
-	pgDatabase: z.string().optional(),
-	pgSsl: z
-		.union([z.string(), z.boolean()])
-		.optional()
-		.transform((v) => (typeof v === "string" ? v === "true" : v))
-		.pipe(z.boolean().default(false)),
+	// MongoDB
+	mongoUrl: z.string().url().default("mongodb://localhost:27017/app"),
 	// Mail
 	smtpHost: z.string().optional(),
 	smtpPort: z.coerce.number().optional(),
@@ -36,14 +26,8 @@ const EnvSchema = z.object({
 const raw = {
 	nodeEnv: process.env.NODE_ENV,
 	port: process.env.PORT,
-	// PG
-	databaseUrl: process.env.DATABASE_URL,
-	pgHost: process.env.PGHOST,
-	pgPort: process.env.PGPORT,
-	pgUser: process.env.PGUSER,
-	pgPassword: process.env.PGPASSWORD,
-	pgDatabase: process.env.PGDATABASE,
-	pgSsl: process.env.PGSSL,
+	// Mongo
+	mongoUrl: process.env.MONGO_URL,
 	// Mail
 	smtpHost: process.env.SMTP_HOST,
 	smtpPort: process.env.SMTP_PORT,

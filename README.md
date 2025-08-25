@@ -1,6 +1,6 @@
 ## Backend Server
 
-APIs for products and order submission (no checkout). Uses Express, PostgreSQL (Sequelize), Nodemailer, and JWT-based admin auth.
+APIs for products and order submission (no checkout). Uses Express, MongoDB (Mongoose), Nodemailer, and JWT-based admin auth.
 
 ### Setup
 1. Copy `.env.example` to `.env` and fill values
@@ -20,14 +20,13 @@ npm start
 ```
 
 ### Environment
-- `DATABASE_URL=postgres://user:pass@host:5432/dbname` (preferred) or:
-  - `PGHOST`, `PGPORT`, `PGUSER`, `PGPASSWORD`, `PGDATABASE`, `PGSSL`
+- `MONGO_URL=mongodb://localhost:27017/app`
 - `PORT` (default 4000)
 - SMTP: `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS`, `SMTP_FROM`, `ADMIN_EMAIL`
  - Auth: `JWT_SECRET` (>=16 chars), `JWT_EXPIRES_IN` (default `1d`)
  - Seeding (optional): `SEED_ADMIN_EMAIL` (default `admin@example.com`), `SEED_ADMIN_PASSWORD` (default `admin123`)
 
-On startup, the server authenticates to PostgreSQL and runs `sequelize.sync()` to create/update tables. It also seeds an initial admin user if none exists with `SEED_ADMIN_EMAIL`.
+On startup, the server connects to MongoDB and creates collections as needed. It also seeds an initial admin user if none exists with `SEED_ADMIN_EMAIL`.
 
 ### Endpoints
 - GET `/api/health`

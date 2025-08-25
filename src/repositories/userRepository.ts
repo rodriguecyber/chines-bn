@@ -13,13 +13,13 @@ export async function verifyPassword(password: string, hash: string): Promise<bo
 }
 
 export async function findUserByEmail(email: string) {
-	const user = await User.findOne({ where: { email } });
-	return user ? user.get({ plain: true }) : undefined;
+	const user = await User.findOne({ email }).lean();
+	return user || undefined;
 }
 
 export async function createUser(input: CreateUserInput) {
 	const password_hash = await hashPassword(input.password);
 	const user = await User.create({ email: input.email, password_hash, role: input.role ?? "admin" });
-	return user.get({ plain: true });
+	return user.toObject();
 }
 
