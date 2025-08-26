@@ -1,11 +1,26 @@
 import { z } from "zod";
 
+const LocalizedStringSchema = z.object({
+	en: z.string().min(1),
+	fr: z.string().min(1),
+	zh: z.string().min(1),
+});
+
+export const CategoryCreateSchema = z.object({
+	name: LocalizedStringSchema,
+	description: LocalizedStringSchema,
+});
+export const CategoryUpdateSchema = CategoryCreateSchema.partial();
+export type CategoryCreateInput = z.infer<typeof CategoryCreateSchema>;
+export type CategoryUpdateInput = z.infer<typeof CategoryUpdateSchema>;
+
 export const ProductCreateSchema = z.object({
-	name: z.string().min(1),
-	description: z.string().optional(),
+	name: LocalizedStringSchema,
+	description: LocalizedStringSchema,
 	price_cents: z.number().int().nonnegative(),
 	image_url: z.string().url().optional(),
 	is_active: z.boolean().optional().default(true),
+	category_id: z.number().int().positive(),
 });
 
 export const ProductUpdateSchema = ProductCreateSchema.partial();
@@ -29,3 +44,10 @@ export const OrderCreateSchema = z.object({
 
 export type OrderCreateInput = z.infer<typeof OrderCreateSchema>;
 export type OrderItemInput = z.infer<typeof OrderItemSchema>;
+
+// Auth
+export const LoginSchema = z.object({
+	email: z.string().email(),
+	password: z.string().min(6),
+});
+export type LoginInput = z.infer<typeof LoginSchema>;
