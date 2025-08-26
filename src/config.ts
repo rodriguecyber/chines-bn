@@ -26,19 +26,15 @@ const EnvSchema = z.object({
 const raw = {
 	nodeEnv: process.env.NODE_ENV,
 	port: process.env.PORT,
-	// Mongo
 	mongoUrl: process.env.MONGO_URL,
-	// Mail
 	smtpHost: process.env.SMTP_HOST,
 	smtpPort: process.env.SMTP_PORT,
 	smtpUser: process.env.SMTP_USER,
 	smtpPass: process.env.SMTP_PASS,
 	smtpFrom: process.env.SMTP_FROM,
 	adminEmail: process.env.ADMIN_EMAIL,
-	// Auth / JWT
 	jwtSecret: process.env.JWT_SECRET,
 	jwtExpiresIn: process.env.JWT_EXPIRES_IN,
-	// Seeding
 	seedAdminEmail: process.env.SEED_ADMIN_EMAIL,
 	seedAdminPassword: process.env.SEED_ADMIN_PASSWORD,
 };

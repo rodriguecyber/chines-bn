@@ -9,7 +9,8 @@ export const productsRouter = Router();
 productsRouter.get("/", async (req, res, next) => {
 	try {
 		const includeInactive = req.query.all === "true";
-		const products = await listProducts(!includeInactive);
+		const categoryId = req.query.categoryId ? z.coerce.number().int().parse(req.query.categoryId) : undefined;
+		const products = await listProducts(!includeInactive, categoryId);
 		res.json(products);
 	} catch (e) { next(e); }
 });
@@ -20,7 +21,7 @@ productsRouter.get("/:id", async (req, res, next) => {
 		const product = await getProductById(id);
 		if (!product) return res.status(404).json({ error: "Product not found" });
 		res.json(product);
-	} catch (e) { next(e); }
+	} catch (e) { next(e); } 
 });
 
 productsRouter.post("/", requireAdmin, async (req, res, next) => {
@@ -31,10 +32,20 @@ productsRouter.post("/", requireAdmin, async (req, res, next) => {
 	} catch (e) { next(e); }
 });
 
-productsRouter.put("/:id", requireAdmin, async (req, res, next) => {
+productsRouter.patch("/:id", requireAdmin, async (req, res, next) => {
 	try {
 		const id = z.coerce.number().int().parse(req.params.id);
 		const input = ProductUpdateSchema.parse(req.body);
+		const product = await updateProduct(id, input);
+		if (!product) return res.status(404).json({ error: "Product not found" });
+		res.json(product);
+	} catch (e) { next(e); }
+});
+
+productsRouter.put("/:id", requireAdmin, async (req, res, next) => {
+	try {
+		const id = z.coerce.number().int().parse(req.params.id);
+		const input = ProductCreateSchema.parse(req.body);
 		const product = await updateProduct(id, input);
 		if (!product) return res.status(404).json({ error: "Product not found" });
 		res.json(product);

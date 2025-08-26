@@ -16,8 +16,11 @@ export async function createProduct(input: ProductCreateInput) {
 	return doc.toObject();
 }
 
-export async function listProducts(activeOnly = true) {
-	const where = (activeOnly ? { is_active: true } : {}) as any;
+export async function listProducts(activeOnly = true, categoryId?: number) {
+	const where: any = {};
+	if (activeOnly) where.is_active = true;
+	if (categoryId !== undefined) where.category_id = categoryId;
+	
 	const products = await Product.find(where).sort({ id: -1 }).lean();
 	return products;
 }

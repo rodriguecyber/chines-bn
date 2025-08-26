@@ -1,6 +1,7 @@
-import express from "express";
+import express, { Request, request, response } from "express";
 import cors from "cors";
 import morgan from "morgan";
+import cookieParser from "cookie-parser";
 import { config } from "./config";
 import { connectMongo } from "./db";
 import "./models";
@@ -9,10 +10,19 @@ import { ordersRouter } from "./routes/orders";
 import { authRouter } from "./routes/auth";
 import { categoriesRouter } from "./routes/categories";
 import { seedInitialAdmin } from "./seed";
+import uploadSingle from "rod-fileupload";
+import { cloudinaryConfig } from "./cloudinary";
 
 async function start() {
 	const app = express();
-	app.use(cors());
+	
+	// CORS configuration for credentials
+	app.use(cors({
+		origin: process.env.FRONTEND_URL || "http://localhost:3000", 
+		credentials: true
+	}));
+	
+	app.use(cookieParser());
 	app.use(express.json({ limit: "1mb" }));
 	app.use(morgan("dev"));
 
@@ -21,6 +31,9 @@ async function start() {
 	});
 
 	app.use("/api/products", productsRouter);
+	app.post("/api/upload", uploadSingle('file',cloudinaryConfig),(req:any,res:any)=>{
+res.status(200).json({url:req.body.file.url})
+	});
 	app.use("/api/orders", ordersRouter);
 	app.use("/api/auth", authRouter);
 	app.use("/api/categories", categoriesRouter);
