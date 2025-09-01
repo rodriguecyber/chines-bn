@@ -11,17 +11,17 @@ export async function createProduct(input: ProductCreateInput) {
 		price_cents: input.price_cents,
 		image_url: input.image_url ?? null,
 		is_active: input.is_active ?? true,
-		category_id: input.category_id,
+		category_id: input.category_id, 
 	});
 	return doc.toObject();
 }
 
-export async function listProducts(activeOnly = true, categoryId?: number) {
+export async function listProducts(activeOnly = true, categoryId?: string) {
 	const where: any = {};
 	if (activeOnly) where.is_active = true;
 	if (categoryId !== undefined) where.category_id = categoryId;
 	
-	const products = await Product.find(where).sort({ id: -1 }).lean();
+	const products = await Product.find(where).populate('category_id').sort({ _id: -1 }).lean();
 	return products;
 }
 

@@ -20,7 +20,7 @@ export const ProductCreateSchema = z.object({
 	price_cents: z.number().int().nonnegative(),
 	image_url: z.string().url().optional(),
 	is_active: z.boolean().optional().default(true),
-	category_id: z.number().int().positive(),
+	category_id: z.string().min(1), // Reference to Category _id
 });
 
 export const ProductUpdateSchema = ProductCreateSchema.partial();
