@@ -9,7 +9,7 @@ export const productsRouter = Router();
 productsRouter.get("/", async (req, res, next) => {
 	try {
 		const includeInactive = req.query.all === "true";
-		const categoryId = req.query.categoryId ? z.coerce.number().int().parse(req.query.categoryId) : undefined;
+		const categoryId = req.query.category ? z.string().parse(req.query.category) : undefined;
 		const products = await listProducts(!includeInactive, categoryId);
 		res.json(products);
 	} catch (e) { next(e); }

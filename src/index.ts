@@ -9,7 +9,7 @@ import { productsRouter } from "./routes/products";
 import { ordersRouter } from "./routes/orders";
 import { authRouter } from "./routes/auth";
 import { categoriesRouter } from "./routes/categories";
-import { seedInitialAdmin } from "./seed";
+import { seedAll } from "./seed";
 import uploadSingle from "rod-fileupload";
 import { cloudinaryConfig } from "./cloudinary";
 
@@ -48,7 +48,7 @@ res.status(200).json({url:req.body.file.url})
 	});
 
 	await connectMongo();
-	await seedInitialAdmin();
+	// await seedAll();
 
 	app.listen(config.port, () => {
 		console.log(`API server listening on http://localhost:${config.port}`);

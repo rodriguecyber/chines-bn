@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 import { config } from "../config";
 
 export interface AuthRequest extends Request {
-	user?: { id: number; role: string };
+	user?: { id: string; role: string };
 }
 
 function extractToken(req: Request): string | null {

@@ -9,7 +9,7 @@ export async function createCategory(input: CategoryCreateInput) {
 }
 
 export async function listCategories() {
-	return await Category.find().sort({ id: 1 }).lean();
+	return await Category.find().sort({ _id: 1 }).lean();
 }
 
 export async function getCategoryById(id: number) {

@@ -17,7 +17,7 @@ export async function findUserByEmail(email: string) {
 	return user || undefined;
 }
 
-export async function findUserById(id: number) {
+export async function findUserById(id: string) {
 	const user = await User.findById(id).lean();
 	return user || undefined;
 }

@@ -12,7 +12,7 @@ export interface UserDoc {
 	updatedAt?: Date;
 }
 
-const UserSchema = new Schema<UserDoc>(
+const UserSchema = new Schema(
 	{
 		email: { type: String, required: true, unique: true, index: true },
 		password_hash: { type: String, required: true },
@@ -44,15 +44,17 @@ export interface CategoryDoc {
 	_id: string;
 	id: number;
 	name: LocalizedString;
+	image_url:string
 	description: LocalizedString;
 	createdAt?: Date;
 	updatedAt?: Date;
 }
 
-const CategorySchema = new Schema<CategoryDoc>(
+const CategorySchema = new Schema(
 	{
-		id: { type: Number, required: true, unique: true, index: true },
 		name: { type: LocalizedStringSchema, required: true },
+		image_url: { type: String, required: true },
+		id: { type: Number, required: true, unique: true, index: true },
 		description: { type: LocalizedStringSchema, required: true },
 	},
 	{ timestamps: true }
@@ -69,12 +71,12 @@ export interface ProductDoc {
 	price_cents: number;
 	image_url?: string | null;
 	is_active: boolean;
-	category_id: number;
+	category_id: string; // Reference to Category _id
 	createdAt?: Date;
 	updatedAt?: Date;
 }
 
-const ProductSchema = new Schema<ProductDoc>(
+const ProductSchema = new Schema(
 	{
 		id: { type: Number, required: true, unique: true, index: true },
 		name: { type: LocalizedStringSchema, required: true },
@@ -82,7 +84,7 @@ const ProductSchema = new Schema<ProductDoc>(
 		price_cents: { type: Number, required: true },
 		image_url: { type: String },
 		is_active: { type: Boolean, default: true },
-		category_id: { type: Number, required: true, index: true },
+		category_id: { type: Schema.Types.ObjectId, ref: 'Category', required: true, index: true },
 	},
 	{ timestamps: true }
 );
@@ -110,7 +112,7 @@ export interface OrderDoc {
 	updatedAt?: Date;
 }
 
-const OrderItemSchema = new Schema<OrderItemEmbedded>(
+const OrderItemSchema = new Schema(
 	{
 		product_id: { type: Number, required: true },
 		quantity: { type: Number, required: true },
@@ -119,7 +121,7 @@ const OrderItemSchema = new Schema<OrderItemEmbedded>(
 	{ _id: false }
 );
 
-const OrderSchema = new Schema<OrderDoc>(
+const OrderSchema = new Schema(
 	{
 		id: { type: Number, required: true, unique: true, index: true },
 		user_name: { type: String, required: true },

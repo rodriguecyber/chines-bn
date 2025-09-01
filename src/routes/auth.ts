@@ -30,7 +30,7 @@ authRouter.post("/login", async (req, res, next) => {
 		res.json({ 
 			token,
 			user: {
-				id: (user as any).id,
+				id: (user as any)._id,
 				email: (user as any).email,
 				role: (user as any).role
 			}
@@ -50,7 +50,7 @@ authRouter.get("/me", requireAuth, async (req, res, next) => {
 		if (!user) return res.status(404).json({ error: "User not found" });
 		
 		res.json({
-			id: (user as any).id,
+			id: (user as any)._id,
 			email: (user as any).email,
 			role: (user as any).role
 		});
