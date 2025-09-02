@@ -17,11 +17,11 @@ productsRouter.get("/", async (req, res, next) => {
 
 productsRouter.get("/:id", async (req, res, next) => {
 	try {
-		const id = z.coerce.number().int().parse(req.params.id);
-		const product = await getProductById(id);
+
+		const product = await getProductById(req.params.id);
 		if (!product) return res.status(404).json({ error: "Product not found" });
 		res.json(product);
-	} catch (e) { next(e); } 
+	} catch (e) { next(e);} 
 });
 
 productsRouter.post("/", requireAdmin, async (req, res, next) => {

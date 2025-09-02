@@ -25,8 +25,8 @@ export async function listProducts(activeOnly = true, categoryId?: string) {
 	return products;
 }
 
-export async function getProductById(id: number) {
-	const product = await Product.findOne({ id }).lean();
+export async function getProductById(id: string) {
+	const product = await Product.findById(id).lean();
 	return product || undefined;
 }
 
