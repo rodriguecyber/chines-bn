@@ -35,10 +35,9 @@ export const OrderItemSchema = z.object({
 });
 
 export const OrderCreateSchema = z.object({
-	user_name: z.string().min(1),
-	user_email: z.string().email().optional(),
-	user_phone: z.string().optional(),
-	contact_message: z.string().optional(),
+	customerNAme: z.string().min(1),
+	customerEmail: z.string().email().optional(),
+	// customerPhone: z.string().optional(),
 	items: z.array(OrderItemSchema).min(1),
 });
 

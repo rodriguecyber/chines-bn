@@ -128,7 +128,7 @@ const OrderSchema = new Schema(
 		user_email: { type: String },
 		user_phone: { type: String },
 		contact_message: { type: String },
-		total_cents: { type: Number, required: true },
+		// total_cents: { type: Number, required: true },
 		status: { type: String, default: "submitted" },
 		items: { type: [OrderItemSchema], required: true },
 	},
