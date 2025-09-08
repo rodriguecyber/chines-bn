@@ -69,7 +69,7 @@ export interface ProductDoc {
 	name: LocalizedString;
 	description: LocalizedString;
 	price_cents: number;
-	image_url?: string | null;
+	image_urls?: string[] ;
 	is_active: boolean;
 	category_id: string; // Reference to Category _id
 	createdAt?: Date;
@@ -82,7 +82,7 @@ const ProductSchema = new Schema(
 		name: { type: LocalizedStringSchema, required: true },
 		description: { type: LocalizedStringSchema, required: true },
 		price_cents: { type: Number, required: true },
-		image_url: { type: String },
+		image_url:[ { type: String }],
 		is_active: { type: Boolean, default: true },
 		category_id: { type: Schema.Types.ObjectId, ref: 'Category', required: true, index: true },
 	},
