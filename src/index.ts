@@ -10,7 +10,7 @@ import { ordersRouter } from "./routes/orders";
 import { authRouter } from "./routes/auth";
 import { categoriesRouter } from "./routes/categories";
 import { seedAll } from "./seed";
-import uploadSingle from "rod-fileupload";
+import uploadSingle, { uploadMultiple } from "rod-fileupload";
 import { cloudinaryConfig } from "./cloudinary";
 
 async function start() {
@@ -31,8 +31,8 @@ async function start() {
 	});
 
 	app.use("/api/products", productsRouter);
-	app.post("/api/upload", uploadSingle('file',cloudinaryConfig),(req:any,res:any)=>{
-res.status(200).json({url:req.body.file.url})
+	app.post("/api/upload", uploadMultiple('files',cloudinaryConfig),(req:Request,res:any)=>{
+res.status(200).json({urls:req.body.files.map((f: { url: any; })=>f.url)})
 	});
 	app.use("/api/orders", ordersRouter);
 	app.use("/api/auth", authRouter);

@@ -81,7 +81,7 @@ const ProductSchema = new Schema(
 		id: { type: Number, required: true, unique: true, index: true },
 		name: { type: LocalizedStringSchema, required: true },
 		description: { type: LocalizedStringSchema, required: true },
-		price_cents: { type: Number, required: true },
+		// price_cents: { type: Number },
 		image_url:[ { type: String }],
 		is_active: { type: Boolean, default: true },
 		category_id: { type: Schema.Types.ObjectId, ref: 'Category', required: true, index: true },
@@ -116,7 +116,7 @@ const OrderItemSchema = new Schema(
 	{
 		product_id: { type: Number, required: true },
 		quantity: { type: Number, required: true },
-		price_cents: { type: Number, required: true },
+		// price_cents: { type: Number, required: true },
 	},
 	{ _id: false }
 );

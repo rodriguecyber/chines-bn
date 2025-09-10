@@ -3,17 +3,17 @@ import { OrderCreateInput } from "../types";
 import { getNextSequence } from "./sequence";
 
 export async function createOrder(input: OrderCreateInput) {
-	const total_cents = input.items.reduce((sum, i) => sum + i.price_cents * i.quantity, 0);
+	// const total_cents = input.items.reduce((sum, i) => sum + i.price_cents * i.quantity, 0);
 	const nextId = await getNextSequence("orders");
 	const order = await Order.create({
 		id: nextId,
-		user_name: input.user_name,
-		user_email: input.user_email ?? null,
-		user_phone: input.user_phone ?? null,
-		contact_message: input.contact_message ?? null,
-		total_cents,
+		user_name: input.customerNAme,
+		user_email: input.customerEmail ?? null,
+		// user_phone: input. ?? null,
+		// contact_message: input. ?? null,
+		// total_cents,
 		status: "submitted",
-		items: input.items.map((i) => ({ product_id: i.product_id, quantity: i.quantity, price_cents: i.price_cents })),
+		items: input.items.map((i) => ({ product_id: i.product_id, quantity: i.quantity })),
 	});
 	return order.toObject();
 }

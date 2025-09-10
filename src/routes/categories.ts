@@ -15,7 +15,7 @@ categoriesRouter.get("/", async (_req, res, next) => {
 
 categoriesRouter.get("/:id", async (req, res, next) => {
 	try {
-		const id = z.coerce.number().int().positive().parse(req.params.id);
+		const id =req.params.id;
 		const cat = await getCategoryById(id);
 		if (!cat) return res.status(404).json({ error: "Category not found" });
 		res.json(cat);
@@ -32,7 +32,7 @@ categoriesRouter.post("/", requireAdmin, async (req, res, next) => {
 
 categoriesRouter.put("/:id", requireAdmin, async (req, res, next) => {
 	try {
-		const id = z.coerce.number().int().positive().parse(req.params.id);
+		const id = req.params.id;
 		const input = CategoryUpdateSchema.parse(req.body);
 		const cat = await updateCategory(id, input);
 		if (!cat) return res.status(404).json({ error: "Category not found" });
@@ -42,7 +42,7 @@ categoriesRouter.put("/:id", requireAdmin, async (req, res, next) => {
 
 categoriesRouter.delete("/:id", requireAdmin, async (req, res, next) => {
 	try {
-		const id = z.coerce.number().int().positive().parse(req.params.id);
+		const id =req.params.id;
 		const ok = await deleteCategory(id);
 		if (!ok) return res.status(404).json({ error: "Category not found" });
 		res.status(204).send();

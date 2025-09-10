@@ -21,7 +21,7 @@ productsRouter.get("/:id", async (req, res, next) => {
 		const product = await getProductById(req.params.id);
 		if (!product) return res.status(404).json({ error: "Product not found" });
 		res.json(product);
-	} catch (e) { next(e);} 
+	} catch (e) { next(e);}      
 });
 
 productsRouter.post("/", requireAdmin, async (req, res, next) => {
@@ -34,7 +34,7 @@ productsRouter.post("/", requireAdmin, async (req, res, next) => {
 
 productsRouter.patch("/:id", requireAdmin, async (req, res, next) => {
 	try {
-		const id = z.coerce.number().int().parse(req.params.id);
+		const id = req.params.id;
 		const input = ProductUpdateSchema.parse(req.body);
 		const product = await updateProduct(id, input);
 		if (!product) return res.status(404).json({ error: "Product not found" });
@@ -44,7 +44,7 @@ productsRouter.patch("/:id", requireAdmin, async (req, res, next) => {
 
 productsRouter.put("/:id", requireAdmin, async (req, res, next) => {
 	try {
-		const id = z.coerce.number().int().parse(req.params.id);
+		const id = req.params.id;
 		const input = ProductCreateSchema.parse(req.body);
 		const product = await updateProduct(id, input);
 		if (!product) return res.status(404).json({ error: "Product not found" });
@@ -54,7 +54,7 @@ productsRouter.put("/:id", requireAdmin, async (req, res, next) => {
 
 productsRouter.delete("/:id", requireAdmin, async (req, res, next) => {
 	try {
-		const id = z.coerce.number().int().parse(req.params.id);
+		const id = req.params.id
 		const ok = await deleteProduct(id);
 		if (!ok) return res.status(404).json({ error: "Product not found" });
 		res.status(204).send();

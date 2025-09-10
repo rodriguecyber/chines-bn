@@ -8,7 +8,7 @@ export async function createProduct(input: ProductCreateInput) {
 		id: nextId,
 		name: input.name,
 		description: input.description,
-		price_cents: input.price_cents,
+		// price_cents: input.price_cents,
 		image_url: input.image_url ?? null,
 		is_active: input.is_active ?? true,
 		category_id: input.category_id, 
@@ -30,14 +30,14 @@ export async function getProductById(id: string) {
 	return product || undefined;
 }
 
-export async function updateProduct(id: number, input: ProductUpdateInput) {
-	const updated = await Product.findOneAndUpdate(
-		{ id },
+export async function updateProduct(id: string, input: ProductUpdateInput) {
+	const updated = await Product.findByIdAndUpdate(
+		 id ,
 		{
 			$set: {
 				...(input.name !== undefined ? { name: input.name } : {}),
 				...(input.description !== undefined ? { description: input.description } : {}),
-				...(input.price_cents !== undefined ? { price_cents: input.price_cents } : {}),
+				// ...(input.price_cents !== undefined ? { price_cents: input.price_cents } : {}),
 				...(input.image_url !== undefined ? { image_url: input.image_url } : {}),
 				...(input.is_active !== undefined ? { is_active: input.is_active } : {}),
 				...(input.category_id !== undefined ? { category_id: input.category_id } : {}),
@@ -48,7 +48,7 @@ export async function updateProduct(id: number, input: ProductUpdateInput) {
 	return updated || undefined;
 }
 
-export async function deleteProduct(id: number) {
-	const res = await Product.deleteOne({ id });
+export async function deleteProduct(id: string) {
+	const res = await Product.deleteOne({ _id:id });
 	return res.deletedCount === 1;
 }
