@@ -32,9 +32,9 @@ export async function sendOrderNotifications(order: OrderForMail): Promise<void>
 		order.user_email ? `Email: ${order.user_email}` : undefined,
 		order.user_phone ? `Phone: ${order.user_phone}` : undefined,
 		order.contact_message ? `Message: ${order.contact_message}` : undefined,
-		`Total: $${(order.total_cents / 100).toFixed(2)}`,
-		"Items:",
-		...order.items.map((i) => ` - product ${i.product_id} x${i.quantity} @ $${(i.price_cents / 100).toFixed(2)}`),
+		// `Total: $${(order.total_cents / 100).toFixed(2)}`,
+		// "Items:",
+		// ...order.items.map((i) => ` - product ${i.product_id} x${i.quantity} @ $${(i.price_cents / 100).toFixed(2)}`),
 	]
 		.filter(Boolean)
 		.join("\n");

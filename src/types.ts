@@ -29,13 +29,14 @@ export type ProductCreateInput = z.infer<typeof ProductCreateSchema>;
 export type ProductUpdateInput = z.infer<typeof ProductUpdateSchema>;
 
 export const OrderItemSchema = z.object({
-	product_id: z.number().int().positive(),
+	product_id: z.string(),
 	quantity: z.number().int().positive(),
+	image_url:z.string().url()
 	// price_cents: z.number().int().nonnegative(),
 });
 
 export const OrderCreateSchema = z.object({
-	customerNAme: z.string().min(1),
+	customerName: z.string().min(1),
 	customerEmail: z.string().email().optional(),
 	// customerPhone: z.string().optional(),
 	items: z.array(OrderItemSchema).min(1),

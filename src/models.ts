@@ -1,3 +1,4 @@
+import { ObjectId, Types } from "mongoose";
 import { mongoose } from "./db";
 
 const { Schema, model } = mongoose;
@@ -93,9 +94,10 @@ export const Product = model<ProductDoc>("Product", ProductSchema);
 
 // Order
 export interface OrderItemEmbedded {
-	product_id: number;
+	product_id: ObjectId;
+	image_url:string
 	quantity: number;
-	price_cents: number;
+	// price_cents: number;
 }
 
 export interface OrderDoc {
@@ -114,7 +116,7 @@ export interface OrderDoc {
 
 const OrderItemSchema = new Schema(
 	{
-		product_id: { type: Number, required: true },
+		product_id: { type: Types.ObjectId, required: true },
 		quantity: { type: Number, required: true },
 		// price_cents: { type: Number, required: true },
 	},
