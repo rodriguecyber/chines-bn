@@ -24,7 +24,7 @@ productsRouter.get("/:id", async (req, res, next) => {
 	} catch (e) { next(e);}      
 });
 
-productsRouter.post("/", requireAdmin, async (req, res, next) => {
+productsRouter.post("/",  async (req, res, next) => {
 	try {
 		const input = ProductCreateSchema.parse(req.body);
 		const product = await createProduct(input);
@@ -32,7 +32,7 @@ productsRouter.post("/", requireAdmin, async (req, res, next) => {
 	} catch (e) { next(e); }
 });
 
-productsRouter.patch("/:id", requireAdmin, async (req, res, next) => {
+productsRouter.patch("/:id", async (req, res, next) => {
 	try {
 		const id = req.params.id;
 		const input = ProductUpdateSchema.parse(req.body);
@@ -42,7 +42,7 @@ productsRouter.patch("/:id", requireAdmin, async (req, res, next) => {
 	} catch (e) { next(e); }
 });
 
-productsRouter.put("/:id", requireAdmin, async (req, res, next) => {
+productsRouter.put("/:id", async (req, res, next) => {
 	try {
 		const id = req.params.id;
 		const input = ProductCreateSchema.parse(req.body);
@@ -52,7 +52,7 @@ productsRouter.put("/:id", requireAdmin, async (req, res, next) => {
 	} catch (e) { next(e); }
 });
 
-productsRouter.delete("/:id", requireAdmin, async (req, res, next) => {
+productsRouter.delete("/:id",  async (req, res, next) => {
 	try {
 		const id = req.params.id
 		const ok = await deleteProduct(id);
