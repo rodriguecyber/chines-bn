@@ -7,7 +7,7 @@ import { requireAuth } from "../middleware/auth";
 
 export const authRouter = Router();
 
-authRouter.post("/login", async (req, res, next) => {
+authRouter.post("/login", async (req, res, next) => { 
 	try {
 		const { email, password } = LoginSchema.parse(req.body);
 		const user = await findUserByEmail(email);

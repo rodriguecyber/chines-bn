@@ -116,8 +116,10 @@ export interface OrderDoc {
 
 const OrderItemSchema = new Schema(
 	{
-		product_id: { type: Types.ObjectId, required: true },
+		product_id: { type: Types.ObjectId, required: true, ref:"Product" },
 		quantity: { type: Number, required: true },
+		image_url: { type: String, required: true },
+	
 		// price_cents: { type: Number, required: true },
 	},
 	{ _id: false }

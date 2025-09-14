@@ -19,11 +19,11 @@ export async function createOrder(input: OrderCreateInput) {
 }
 
 export async function getOrderById(id: number) {
-	const order = await Order.findOne({ id }).lean();
+	const order = await Order.findOne({ id }).lean().populate('items.product_id');
 	return order || undefined;
 }
 
 export async function listOrders(limit = 50) {
-	const orders = await Order.find().sort({ id: -1 }).limit(limit).lean();
+	const orders = await Order.find().sort({ id: -1 }).limit(limit).lean().populate('items.product_id');
 	return orders;
 }
